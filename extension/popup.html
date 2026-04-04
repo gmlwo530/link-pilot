@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>link-pilot</title>
+  <style>
+    body { font-family: -apple-system, sans-serif; width: 340px; margin: 12px; }
+    .row { display: flex; gap: 8px; margin-bottom: 8px; }
+    input, select { flex: 1; padding: 6px; }
+    button { padding: 6px 8px; }
+    ul { list-style: none; padding: 0; margin: 8px 0 0; max-height: 360px; overflow: auto; }
+    li { border-bottom: 1px solid #eee; padding: 8px 0; }
+    .title { font-size: 12px; font-weight: 600; }
+    .meta { font-size: 11px; color: #666; }
+    .chip { display:inline-block; padding:2px 6px; border:1px solid #ddd; border-radius:10px; font-size:10px; margin-right:4px; cursor:pointer; }
+    #toast { font-size:11px; color:#0a7; min-height:14px; }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <input id="search" placeholder="검색 (제목/URL)" />
+    <button id="refresh">새로고침</button>
+  </div>
+  <div class="row" id="stats" style="font-size:12px;color:#555;">전체 0 · unread 0 · read 0</div>
+  <div class="row">
+    <input id="tagFilter" placeholder="태그 필터 (예: ai)" />
+    <button id="clearTagFilter">태그 초기화</button>
+  </div>
+  <div class="row">
+    <button id="saveCurrent">현재 탭 저장</button>
+    <button id="showUnread">Unread만</button>
+  </div>
+  <div class="row">
+    <select id="sortOrder">
+      <option value="desc">최신순</option>
+      <option value="asc">오래된순</option>
+    </select>
+    <button id="markAllRead">전체 읽음</button>
+    <button id="markAllUnread">전체 unread</button>
+  </div>
+  <div class="row">
+    <button id="exportJson">Export</button>
+    <input id="importFile" type="file" accept="application/json" style="display:none" />
+    <button id="importJson">Import</button>
+  </div>
+  <div id="toast"></div>
+  <ul id="list"></ul>
+  <script src="popup.js"></script>
+</body>
+</html>

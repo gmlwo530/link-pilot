@@ -1,7 +1,7 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 
-const dbPath = path.join(process.cwd(), 'link-pilot', 'server', 'bookmark.db');
+const dbPath = path.join(__dirname, '..', 'bookmark.db');
 const db = new DatabaseSync(dbPath);
 
 function initDb() {

@@ -1,12 +1,31 @@
 # RUNBOOK - link-pilot
 
 ## Start the Server
+### Local Node
 ```bash
 cd /Users/choiheejae/.openclaw/workspace
 node link-pilot/server/src/index.js
 ```
 Expected log:
 - `[link-pilot] server listening on http://127.0.0.1:4312`
+
+### Docker Compose (recommended for always-on)
+```bash
+cd /Users/choiheejae/.openclaw/workspace/link-pilot
+docker compose up -d --build
+```
+
+Health check:
+```bash
+curl http://127.0.0.1:4312/health
+```
+
+Useful commands:
+```bash
+docker compose logs -f
+docker compose restart
+docker compose down
+```
 
 ## Load Chrome Extension
 1. Open `chrome://extensions`

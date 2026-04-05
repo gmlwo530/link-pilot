@@ -2,8 +2,8 @@ const http = require('http');
 const { initDb, createBookmark, listBookmarks, updateBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats } = require('./db');
 const { summarizeFromUrl } = require('./summarizer');
 
-const HOST = '127.0.0.1';
-const PORT = 4312;
+const HOST = process.env.HOST || '127.0.0.1';
+const PORT = Number(process.env.PORT || 4312);
 
 initDb();
 

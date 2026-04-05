@@ -2,19 +2,9 @@
 
 ## [Unreleased]
 ### Added
-- Added `.env.example`
-- Added `CHANGELOG.md`
-- Added `PRODUCT.md` (merged former PRD/ROADMAP)
-- Added `ENGINEERING.md` (merged former SPEC/LOOP)
-- Added `RUNBOOK.md` (merged former SETUP/DEMO)
+- Added Docker support (`Dockerfile`, `docker-compose.yml`) for always-on local server execution
 
 ### Changed
-- Reworked `README.md` into an agent-first document index
-
-### Removed
-- Removed `PRD.md`
-- Removed `ROADMAP.md`
-- Removed `SPEC.md`
-- Removed `docs/SETUP.md`
-- Removed `docs/DEMO.md`
-- Removed `docs/LOOP.md`
+- `server/src/index.js` now supports `HOST` and `PORT` environment variables
+- `server/src/db.js` now uses a stable DB path relative to source (`server/bookmark.db`)
+- Updated `README.md` and `RUNBOOK.md` with Docker-based startup/ops flow

@@ -14,9 +14,6 @@
   },
   "commands": {
     "save-bookmark": {
-      "suggested_key": {
-        "default": "Command+Alt+Shift+B"
-      },
       "description": "현재 페이지를 로컬 북마크로 저장"
     }
   }

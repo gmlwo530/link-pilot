@@ -34,13 +34,14 @@ docker compose down
 4. Select `.../link-pilot/extension`
 
 ## Shortcut
-- Default: `⌘ + ⌥ + ⇧ + B`
-- Change at: `chrome://extensions/shortcuts`
+- Default shortcut is not prebound right now to avoid Chrome manifest validation issues.
+- Set it manually at: `chrome://extensions/shortcuts`
 
 ## Smoke Test
-1. Save from any page with shortcut
+1. Save from any page with popup button or custom shortcut
 2. Open popup and confirm list item appears
 3. Change item status (`unread`/`read`) and verify
+4. Delete one bookmark and confirm it disappears from the list
 
 ## 1-Minute Demo
 1. Save 2 pages

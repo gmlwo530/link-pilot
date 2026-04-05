@@ -23,32 +23,72 @@ async function saveCurrentTab() {
   await load();
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function render(items) {
   listEl.innerHTML = '';
+
+  if (!items.length) {
+    const li = document.createElement('li');
+    li.className = 'item';
+    li.innerHTML = `
+      <div class="item-head">
+        <div>
+          <div class="title">아직 저장된 북마크가 없네</div>
+          <div class="meta">현재 탭 저장을 눌러 첫 링크를 조용히 쌓아보자.</div>
+        </div>
+      </div>
+    `;
+    listEl.appendChild(li);
+    return;
+  }
+
   for (const item of items) {
     const li = document.createElement('li');
+    li.className = 'item';
     const tags = (() => {
       try { return JSON.parse(item.tags_json || '[]').join(', '); } catch { return ''; }
     })();
+    const safeTitle = escapeHtml(item.title || '(제목 없음)');
+    const safeUrl = escapeHtml(item.url || '');
+    const safeNote = escapeHtml(item.note || '');
+    const safeTags = escapeHtml(tags);
+    const stateClass = item.status === 'unread' ? 'state unread' : 'state';
+    const stateLabel = item.status === 'unread' ? 'unread' : 'read';
 
     li.innerHTML = `
-      <div class="title">${item.title || '(제목 없음)'}</div>
-      <div class="meta">${item.status} · <a href="${item.url}" target="_blank">${item.url}</a></div>
+      <div class="item-head">
+        <div>
+          <div class="title">${safeTitle}</div>
+          <div class="meta"><a href="${safeUrl}" target="_blank">${safeUrl}</a></div>
+        </div>
+        <div class="${stateClass}">${stateLabel}</div>
+      </div>
       <div class="row">
         <button data-id="${item.id}" data-next="${item.status === 'unread' ? 'read' : 'unread'}">${item.status === 'unread' ? '읽음 처리' : '다시 unread'}</button>
         <button data-summary="${item.id}">요약/재시도</button>
+        <button data-delete="${item.id}">삭제</button>
       </div>
       <div class="row">
-        <input id="note-${item.id}" placeholder="메모" value="${(item.note || '').replaceAll('"', '&quot;')}" />
+        <input id="note-${item.id}" placeholder="메모" value="${safeNote}" />
       </div>
       <div class="row">
-        <input id="tags-${item.id}" placeholder="태그 (쉼표로 구분)" value="${tags.replaceAll('"', '&quot;')}" />
+        <input id="tags-${item.id}" placeholder="태그 (쉼표로 구분)" value="${safeTags}" />
         <button data-save-meta="${item.id}">저장</button>
       </div>
       <div class="row" id="chips-${item.id}"></div>
-      <div class="meta" id="summary-${item.id}"></div>
-      <ul id="points-${item.id}" style="margin:6px 0 0 14px; padding:0;"></ul>
-      <div class="meta" id="run-${item.id}"></div>
+      <div class="summary-box">
+        <div class="meta" id="summary-${item.id}"></div>
+        <ul class="points" id="points-${item.id}"></ul>
+        <div class="meta" id="run-${item.id}"></div>
+      </div>
     `;
     listEl.appendChild(li);
     const chipsEl = document.getElementById(`chips-${item.id}`);
@@ -88,6 +128,23 @@ async function patchMeta(id) {
 
   const runEl = document.getElementById(`run-${id}`);
   if (runEl) runEl.textContent = '메타 저장 완료';
+  await load();
+}
+
+async function deleteItem(id) {
+  const confirmed = confirm('이 북마크를 삭제할까? 요약과 실행 기록도 같이 지워져.');
+  if (!confirmed) return;
+
+  const res = await fetch(`${API}/bookmarks/${id}`, {
+    method: 'DELETE'
+  });
+
+  if (!res.ok) {
+    showToast('삭제 실패');
+    return;
+  }
+
+  showToast('북마크 삭제 완료');
   await load();
 }
 
@@ -258,6 +315,12 @@ listEl.addEventListener('click', (e) => {
   const summaryBtn = e.target.closest('button[data-summary]');
   if (summaryBtn) {
     summarize(summaryBtn.dataset.summary);
+    return;
+  }
+
+  const deleteBtn = e.target.closest('button[data-delete]');
+  if (deleteBtn) {
+    deleteItem(deleteBtn.dataset.delete);
     return;
   }
 

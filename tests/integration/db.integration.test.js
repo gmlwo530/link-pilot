@@ -10,7 +10,7 @@ function loadDbModule(dbFilePath) {
   return require(modPath);
 }
 
-test('db integration: create, dedupe, update, stats', () => {
+test('db integration: create, dedupe, update, stats, delete', () => {
   const tempDir = fs.mkdtempSync(path.join(process.cwd(), 'tmp-db-int-'));
   const dbFile = path.join(tempDir, 'bookmark.db');
   const db = loadDbModule(dbFile);
@@ -28,6 +28,9 @@ test('db integration: create, dedupe, update, stats', () => {
   assert.equal(updated.status, 'read');
   assert.equal(updated.note, 'done');
 
+  db.summarizeBookmark(first.id, { shortSummary: 'test summary', keyPoints: ['a'] });
+  db.logSummaryRun(first.id, true, null);
+
   const listed = db.listBookmarks({ status: 'read', q: null, tag: null, sort: 'desc' });
   assert.equal(listed.length, 1);
 
@@ -35,6 +38,14 @@ test('db integration: create, dedupe, update, stats', () => {
   assert.equal(stats.total, 1);
   assert.equal(stats.read, 1);
   assert.equal(stats.unread, 0);
+
+  const deleted = db.deleteBookmark(first.id);
+  assert.equal(deleted.id, first.id);
+
+  const afterDelete = db.listBookmarks({ status: null, q: null, tag: null, sort: 'desc' });
+  assert.equal(afterDelete.length, 0);
+  assert.equal(db.getSummary(first.id), null);
+  assert.equal(db.getLastSummaryRun(first.id), null);
 
   fs.rmSync(tempDir, { recursive: true, force: true });
 });

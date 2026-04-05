@@ -31,6 +31,7 @@ Current cases:
   - update status/note
   - list filtered data
   - validate stats
+  - delete bookmark and cascade related summary/run cleanup
 
 Run:
 ```bash
@@ -49,6 +50,7 @@ Current cases:
   - create bookmark through HTTP
   - list bookmarks through HTTP
   - trigger summarize endpoint and verify fallback path
+  - delete bookmark through HTTP
 
 Run:
 ```bash

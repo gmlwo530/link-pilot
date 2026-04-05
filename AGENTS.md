@@ -70,8 +70,10 @@ Avoid sub-agents for tiny one-line edits.
 ## Commit & Documentation Expectations
 
 - One commit should represent one loop outcome.
+- Prefer test-first for product changes: add/update tests before implementation when practical.
 - Update the right document when behavior changes.
 - If project direction changes, update `README.md` and `AGENTS.md` together.
+- For user-visible behavior changes, also review `RUNBOOK.md` and `TESTING.md`.
 
 ## User-Facing Progress Updates
 

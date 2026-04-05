@@ -23,7 +23,7 @@ function waitForServerReady(proc, timeoutMs = 8000) {
   });
 }
 
-test('e2e: health -> create bookmark -> list -> summarize fallback', async (t) => {
+test('e2e: health -> create bookmark -> list -> summarize fallback -> delete', async (t) => {
   const tempDir = fs.mkdtempSync(path.join(process.cwd(), 'tmp-db-e2e-'));
   const dbFile = path.join(tempDir, 'bookmark.db');
   const port = 4317;
@@ -69,4 +69,14 @@ test('e2e: health -> create bookmark -> list -> summarize fallback', async (t) =
 
   assert.equal(summarize.generated, false);
   assert.ok(summarize.short_summary);
+
+  const deleted = await fetch(`${base}/bookmarks/${created.id}`, {
+    method: 'DELETE',
+  }).then(r => r.json());
+
+  assert.equal(deleted.id, created.id);
+
+  const afterDelete = await fetch(`${base}/bookmarks`).then(r => r.json());
+  assert.equal(Array.isArray(afterDelete.items), true);
+  assert.equal(afterDelete.items.length, 0);
 });

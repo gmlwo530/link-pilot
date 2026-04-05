@@ -1,5 +1,5 @@
 const http = require('http');
-const { initDb, createBookmark, listBookmarks, updateBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats } = require('./db');
+const { initDb, createBookmark, listBookmarks, updateBookmark, deleteBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats } = require('./db');
 const { summarizeFromUrl } = require('./summarizer');
 
 const HOST = process.env.HOST || '127.0.0.1';
@@ -60,6 +60,13 @@ const server = http.createServer(async (req, res) => {
       }
     });
     return;
+  }
+
+  if (req.method === 'DELETE' && req.url.match(/^\/bookmarks\/\d+$/)) {
+    const id = Number(req.url.split('/')[2]);
+    const deleted = deleteBookmark(id);
+    if (!deleted) return send(res, 404, { error: 'not_found' });
+    return send(res, 200, deleted);
   }
 
   if (req.method === 'POST' && req.url === '/bookmarks/import') {

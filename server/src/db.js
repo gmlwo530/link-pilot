@@ -132,6 +132,17 @@ function updateBookmark(id, payload) {
   return stmt.get(nextStatus, nextNote, nextTagsJson, id);
 }
 
+function deleteBookmark(id) {
+  if (!id) return null;
+  const current = db.prepare('SELECT * FROM bookmarks WHERE id = ?').get(id);
+  if (!current) return null;
+
+  db.prepare('DELETE FROM summaries WHERE bookmark_id = ?').run(id);
+  db.prepare('DELETE FROM summary_runs WHERE bookmark_id = ?').run(id);
+  db.prepare('DELETE FROM bookmarks WHERE id = ?').run(id);
+  return current;
+}
+
 function summarizeBookmark(id, summaryPayload) {
   const bookmark = db.prepare('SELECT * FROM bookmarks WHERE id = ?').get(id);
   if (!bookmark) return null;
@@ -173,4 +184,4 @@ function getLastSummaryRun(bookmarkId) {
   return db.prepare('SELECT * FROM summary_runs WHERE bookmark_id = ? ORDER BY id DESC LIMIT 1').get(bookmarkId) || null;
 }
 
-module.exports = { initDb, createBookmark, listBookmarks, updateBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats, dbPath };
+module.exports = { initDb, createBookmark, listBookmarks, updateBookmark, deleteBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats, dbPath };

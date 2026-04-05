@@ -14,6 +14,7 @@
 - `POST /bookmarks` — create bookmark
 - `GET /bookmarks?status=&q=&tag=&sort=` — list/filter bookmarks
 - `PATCH /bookmarks/:id` — update status/tags/memo
+- `DELETE /bookmarks/:id` — delete bookmark and related summary/run records
 - `POST /bookmarks/:id/summarize` — generate summary (with fallback)
 - `GET /bookmarks/:id/summary` — fetch summary
 - `GET /bookmarks/:id/summary-run` — fetch latest summary run metadata

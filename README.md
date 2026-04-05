@@ -28,7 +28,7 @@ docker compose down
 Then:
 1. Open `chrome://extensions` and enable Developer Mode
 2. Click **Load unpacked** and select `link-pilot/extension`
-3. Test save flow with shortcut: `⌘ + ⌥ + ⇧ + B`
+3. Test save flow with the popup's **현재 탭 저장** button (shortcut can be set manually later in `chrome://extensions/shortcuts`)
 
 ## Documents
 ### Core

@@ -54,3 +54,14 @@
 - explicit log/error verification path
 - one-line next-loop entry condition
 - `CHANGELOG.md` updated
+
+## Testing
+- Unit tests: `tests/unit/`
+- Integration tests: `tests/integration/`
+- E2E tests: `tests/e2e/`
+- Detailed test-case list: `TESTING.md`
+
+Run all tests:
+```bash
+npm test
+```

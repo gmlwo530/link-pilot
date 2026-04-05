@@ -39,4 +39,4 @@ async function summarizeFromUrl(url, title = '') {
   return { shortSummary, keyPoints };
 }
 
-module.exports = { summarizeFromUrl };
+module.exports = { summarizeFromUrl, stripHtml, splitSentences };

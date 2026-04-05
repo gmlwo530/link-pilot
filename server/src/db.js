@@ -1,7 +1,7 @@
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
 
-const dbPath = path.join(__dirname, '..', 'bookmark.db');
+const dbPath = process.env.DB_PATH || path.join(__dirname, '..', 'bookmark.db');
 const db = new DatabaseSync(dbPath);
 
 function initDb() {
@@ -173,4 +173,4 @@ function getLastSummaryRun(bookmarkId) {
   return db.prepare('SELECT * FROM summary_runs WHERE bookmark_id = ? ORDER BY id DESC LIMIT 1').get(bookmarkId) || null;
 }
 
-module.exports = { initDb, createBookmark, listBookmarks, updateBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats };
+module.exports = { initDb, createBookmark, listBookmarks, updateBookmark, summarizeBookmark, getSummary, logSummaryRun, getLastSummaryRun, getStats, dbPath };

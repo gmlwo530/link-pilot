@@ -39,6 +39,7 @@ Then:
 - `RUNBOOK.md` — setup, validation, demo, troubleshooting
 - `.env.example` — environment variable baseline
 - `CHANGELOG.md` — change history
+- `TESTING.md` — test strategy and test cases (unit/integration/e2e)
 
 ## Repository Structure
 - `server/` — local API and DB access

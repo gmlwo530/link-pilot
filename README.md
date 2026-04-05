@@ -1,27 +1,27 @@
 # link-pilot
 
-Chrome Extension + local server + SQLite 기반 개인 북마크 copilot.
+A personal bookmark copilot built with a Chrome Extension, a local server, and SQLite.
 
 ## Quick Start
-1. 서버 실행
+1. Start the server
 ```bash
 cd /Users/choiheejae/.openclaw/workspace
 node link-pilot/server/src/index.js
 ```
-2. Chrome에서 `chrome://extensions` → 개발자 모드 ON
-3. `압축해제된 확장 프로그램 로드`로 `link-pilot/extension` 선택
-4. 단축키 `⌘ + ⌥ + ⇧ + B` 로 저장 테스트
+2. Open `chrome://extensions` and enable Developer Mode
+3. Click **Load unpacked** and select `link-pilot/extension`
+4. Test save flow with shortcut: `⌘ + ⌥ + ⇧ + B`
 
 ## Documents
 ### Core
-- `README.md` — 인덱스 + 빠른 시작
-- `AGENTS.md` — 에이전트 작업 원칙/운영 방식
-- `PRODUCT.md` — 제품 목표/범위/우선순위
-- `ENGINEERING.md` — 기술 명세/API/개발 루프
-- `RUNBOOK.md` — 실행/검증/데모/트러블슈팅
-- `.env.example` — 환경 변수 기준
-- `CHANGELOG.md` — 변경 이력
+- `README.md` — index + quick start
+- `AGENTS.md` — agent operating principles
+- `PRODUCT.md` — product goals, scope, priorities
+- `ENGINEERING.md` — architecture, APIs, development loop
+- `RUNBOOK.md` — setup, validation, demo, troubleshooting
+- `.env.example` — environment variable baseline
+- `CHANGELOG.md` — change history
 
-## Repo Structure
-- `server/` — 로컬 API 및 DB 접근
-- `extension/` — Chrome Extension UI/저장 트리거
+## Repository Structure
+- `server/` — local API and DB access
+- `extension/` — Chrome Extension UI and save trigger

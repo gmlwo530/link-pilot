@@ -2,19 +2,19 @@
 
 ## [Unreleased]
 ### Added
-- `.env.example` 추가
-- `CHANGELOG.md` 추가
-- `PRODUCT.md` 추가 (기존 PRD/ROADMAP 통합)
-- `ENGINEERING.md` 추가 (기존 SPEC/LOOP 통합)
-- `RUNBOOK.md` 추가 (기존 SETUP/DEMO 통합)
+- Added `.env.example`
+- Added `CHANGELOG.md`
+- Added `PRODUCT.md` (merged former PRD/ROADMAP)
+- Added `ENGINEERING.md` (merged former SPEC/LOOP)
+- Added `RUNBOOK.md` (merged former SETUP/DEMO)
 
 ### Changed
-- `README.md`를 에이전트 중심 문서 인덱스 구조로 개편
+- Reworked `README.md` into an agent-first document index
 
 ### Removed
-- `PRD.md`
-- `ROADMAP.md`
-- `SPEC.md`
-- `docs/SETUP.md`
-- `docs/DEMO.md`
-- `docs/LOOP.md`
+- Removed `PRD.md`
+- Removed `ROADMAP.md`
+- Removed `SPEC.md`
+- Removed `docs/SETUP.md`
+- Removed `docs/DEMO.md`
+- Removed `docs/LOOP.md`

@@ -1,50 +1,50 @@
 # PRODUCT - link-pilot
 
-## 문제 정의
-저장한 링크가 쌓이기만 하고 실제로 읽지 못하는 문제가 반복된다. link-pilot은 저장에서 끝나는 북마크를 unread 정리와 요약을 통해 실제 소비 단계까지 연결한다.
+## Problem
+People save many links but rarely come back to consume them. link-pilot closes the gap between "saved" and "actually read."
 
-## 제품 목표
-- 웹페이지를 빠르게 저장
-- unread 우선순위를 명확히 관리
-- AI 요약으로 읽기 진입 장벽 감소
-- 태그/검색/정렬로 재탐색 비용 최소화
+## Product Goals
+- Save pages quickly
+- Keep unread items visible and manageable
+- Lower reading friction with AI summaries
+- Reduce retrieval cost via tags/search/sort
 
-## 타깃 사용자
-- 자료를 많이 수집하지만 소비율이 낮은 개인 사용자
-- 리서치/기획/개발 업무에서 링크 큐레이션이 필요한 사용자
+## Target Users
+- Individuals who collect many resources but have low consumption rate
+- Research, planning, and engineering users who need practical curation
 
-## MVP 범위 (In Scope)
-1. Chrome Extension에서 현재 탭 저장 (`⌘ + ⌥ + ⇧ + B`)
-2. 로컬 서버 API + SQLite 저장/조회
-3. unread/read 상태 관리
-4. 북마크별 요약 요청 및 결과 확인
-5. 태그/검색/정렬 기반 기본 탐색
+## MVP Scope (In Scope)
+1. Save current tab from Chrome Extension (`⌘ + ⌥ + ⇧ + B`)
+2. Local server API + SQLite persistence
+3. unread/read status management
+4. Per-bookmark summary request and result display
+5. Basic discovery via tags, search, and sorting
 
-## 제외 범위 (Out of Scope)
-- 멀티유저 협업 권한
-- 클라우드 동기화
-- 고급 개인화 추천
-- 모바일 앱
+## Out of Scope
+- Multi-user collaboration permissions
+- Cloud sync
+- Advanced personalized recommendations
+- Mobile app
 
-## 마일스톤
-### M0. 기반 안정화 (현재)
-- [x] Extension/Server/DB 기본 스캐폴딩
-- [x] 저장/조회/요약 기본 API 연결
-- [ ] 저장 신뢰성 점검 (중복/예외/오류 메시지)
-- [ ] 기본 UX 정리 (목록/필터/상태전환)
+## Milestones
+### M0. Foundation Stabilization (Current)
+- [x] Extension/Server/DB scaffolding
+- [x] Core save/list/summary API wiring
+- [ ] Save reliability checks (dedupe/errors/messages)
+- [ ] Baseline UX cleanup (list/filter/state change)
 
-### M1. 읽기 전환율 개선
-- [ ] unread 우선순위 정렬 개선
-- [ ] 요약 실패 재시도 UX 개선
-- [ ] 태그 필터링 강화
-- [ ] 주간 소비 통계
+### M1. Reading Conversion Improvement
+- [ ] Better unread prioritization
+- [ ] Better summary retry UX
+- [ ] Stronger tag-based filtering
+- [ ] Weekly consumption stats
 
-### M2. 운영 편의
-- [ ] Import/Export 안정성 보강
-- [ ] 운영 절차 정리
-- [ ] 성능 점검
+### M2. Operational Convenience
+- [ ] Import/Export hardening
+- [ ] Operations playbook refinement
+- [ ] Performance checks
 
-## 이번 주 우선순위
-1. 저장 성공률/오류 처리 안정화
-2. unread→read 전환 흐름 단순화
-3. 요약 실패 메시지/재시도 UX 개선
+## Current Week Priorities
+1. Save reliability and error handling
+2. Simpler unread → read conversion flow
+3. Better summary failure/retry messaging

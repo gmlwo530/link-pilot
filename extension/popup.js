@@ -61,7 +61,7 @@ function render(items) {
     const safeNote = escapeHtml(item.note || '');
     const safeTags = escapeHtml(tags);
     const stateClass = item.status === 'unread' ? 'state unread' : 'state';
-    const stateLabel = item.status === 'unread' ? 'unread' : 'read';
+    const stateLabel = item.status === 'unread' ? '미읽음' : '읽음';
 
     li.innerHTML = `
       <div class="item-head">
@@ -72,7 +72,7 @@ function render(items) {
         <div class="${stateClass}">${stateLabel}</div>
       </div>
       <div class="row">
-        <button data-id="${item.id}" data-next="${item.status === 'unread' ? 'read' : 'unread'}">${item.status === 'unread' ? '읽음 처리' : '다시 unread'}</button>
+        <button data-id="${item.id}" data-next="${item.status === 'unread' ? 'read' : 'unread'}">${item.status === 'unread' ? '읽음 처리' : '미읽음으로 변경'}</button>
         <button data-summary="${item.id}">요약/재시도</button>
         <button data-delete="${item.id}">삭제</button>
       </div>
@@ -151,7 +151,7 @@ async function deleteItem(id) {
 async function loadStats() {
   const res = await fetch(`${API}/stats`);
   const s = await res.json();
-  statsEl.textContent = `전체 ${s.total} · unread ${s.unread} · read ${s.read}`;
+  statsEl.textContent = `전체 ${s.total} · 미읽음 ${s.unread} · 읽음 ${s.read}`;
 }
 
 async function load() {
@@ -202,7 +202,7 @@ async function importBookmarks(file) {
   });
   const data = await res.json();
   await load();
-  showToast(`Import 완료: 신규 ${data.inserted ?? 0}, 중복갱신 ${data.deduped ?? 0}`);
+  showToast(`가져오기 완료: 신규 ${data.inserted ?? 0}, 중복 갱신 ${data.deduped ?? 0}`);
 }
 
 document.getElementById('saveCurrent').addEventListener('click', saveCurrentTab);
@@ -210,7 +210,7 @@ document.getElementById('refresh').addEventListener('click', load);
 document.getElementById('showUnread').addEventListener('click', async () => {
   unreadOnly = !unreadOnly;
   await chrome.storage.local.set({ unreadOnly });
-  document.getElementById('showUnread').textContent = unreadOnly ? 'Unread만' : '전체 보기';
+  document.getElementById('showUnread').textContent = unreadOnly ? '미읽음만 보기' : '전체 보기';
   await load();
 });
 
@@ -249,7 +249,7 @@ document.getElementById('markAllUnread').addEventListener('click', async () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status: 'unread' })
   });
-  showToast('전체 unread 처리 완료');
+  showToast('전체 미읽음 처리 완료');
   await load();
 });
 
@@ -341,7 +341,7 @@ async function initPrefs() {
   const pref = await chrome.storage.local.get(['unreadOnly', 'sortOrder']);
   unreadOnly = pref.unreadOnly ?? true;
   sortEl.value = pref.sortOrder || 'desc';
-  document.getElementById('showUnread').textContent = unreadOnly ? 'Unread만' : '전체 보기';
+  document.getElementById('showUnread').textContent = unreadOnly ? '미읽음만 보기' : '전체 보기';
 }
 
 initPrefs().then(load);

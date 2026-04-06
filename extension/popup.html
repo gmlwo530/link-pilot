@@ -5,47 +5,367 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>link-pilot</title>
   <style>
-    body { font-family: -apple-system, sans-serif; width: 340px; margin: 12px; }
-    .row { display: flex; gap: 8px; margin-bottom: 8px; }
-    input, select { flex: 1; padding: 6px; }
-    button { padding: 6px 8px; }
-    ul { list-style: none; padding: 0; margin: 8px 0 0; max-height: 360px; overflow: auto; }
-    li { border-bottom: 1px solid #eee; padding: 8px 0; }
-    .title { font-size: 12px; font-weight: 600; }
-    .meta { font-size: 11px; color: #666; }
-    .chip { display:inline-block; padding:2px 6px; border:1px solid #ddd; border-radius:10px; font-size:10px; margin-right:4px; cursor:pointer; }
-    #toast { font-size:11px; color:#0a7; min-height:14px; }
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --line: #e5e7eb;
+      --line-strong: #d1d5db;
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --success: #0f766e;
+      --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Noto Sans KR", sans-serif;
+      width: 388px;
+      margin: 0;
+      color: var(--text);
+      background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    }
+
+    .app { padding: 14px; }
+
+    .shell {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fcfdff;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      font-weight: 750;
+    }
+
+    .brand p {
+      margin: 5px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .section {
+      padding: 12px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .stats-card {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toolbar-block {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toolbar-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .row-wrap {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0;
+    }
+
+    input, select, button { font: inherit; }
+
+    input, select {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 8px;
+      padding: 0 10px;
+      height: 36px;
+      font-size: 13px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    input::placeholder { color: #9ca3af; }
+
+    input:focus, select:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.35);
+    }
+
+    button {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0 10px;
+      height: 36px;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: 0.16s ease;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: #f8fafc;
+      border-color: var(--line-strong);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    button.primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    button.ghost {
+      color: var(--muted);
+      background: #fff;
+    }
+
+    .chips-row {
+      padding: 4px 12px 0;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    #toast {
+      min-height: 18px;
+      padding: 6px 14px 0;
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    ul {
+      list-style: none;
+      padding: 10px 12px 12px;
+      margin: 0;
+      max-height: 430px;
+      overflow: auto;
+    }
+
+    ul::-webkit-scrollbar { width: 8px; }
+    ul::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+
+    li.item {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 9px;
+    }
+
+    .item-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .state {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      background: #f3f4f6;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .state.unread {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+    }
+
+    .meta {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .meta a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(107,114,128,0.35);
+      word-break: break-all;
+    }
+
+    .item .row,
+    .item .row-wrap {
+      margin-top: 8px;
+    }
+
+    .item button {
+      flex: 1;
+      height: 34px;
+      font-size: 12px;
+    }
+
+    .summary-box {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+    }
+
+    .summary-box .meta { margin-bottom: 6px; }
+
+    .points {
+      margin: 0;
+      padding-left: 16px;
+      color: var(--muted);
+    }
+
+    .points li {
+      margin-bottom: 4px;
+      padding: 0;
+      border: 0;
+      background: none;
+      border-radius: 0;
+    }
+
+    .footer-space { height: 4px; }
   </style>
 </head>
 <body>
-  <div class="row">
-    <input id="search" placeholder="검색 (제목/URL)" />
-    <button id="refresh">새로고침</button>
+  <div class="app">
+    <div class="shell">
+      <div class="header">
+        <div class="brand-row">
+          <div class="brand">
+            <h1>link-pilot</h1>
+            <p>찾기 → 확인 → 정리 흐름 중심</p>
+          </div>
+          <div class="status-pill">local mode</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="stats-card" id="stats">전체 0 · 미읽음 0 · 읽음 0</div>
+
+        <div class="toolbar-block">
+          <p class="toolbar-label">보기 옵션</p>
+          <div class="row">
+            <input id="search" placeholder="제목, URL 검색" />
+            <button id="refresh" class="ghost">새로고침</button>
+          </div>
+          <div class="row">
+            <input id="tagFilter" placeholder="태그 필터 (예: ai)" />
+            <button id="clearTagFilter" class="ghost">필터 초기화</button>
+          </div>
+          <div class="row-wrap">
+            <button id="saveCurrent" class="primary">현재 탭 저장</button>
+            <button id="showUnread">미읽음만 보기</button>
+            <select id="sortOrder">
+              <option value="desc">최신순</option>
+              <option value="asc">오래된순</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="toolbar-block">
+          <p class="toolbar-label">데이터 관리</p>
+          <div class="row-wrap">
+            <button id="markAllRead">전체 읽음 처리</button>
+            <button id="markAllUnread">전체 미읽음 처리</button>
+            <button id="exportJson">내보내기</button>
+            <input id="importFile" type="file" accept="application/json" style="display:none" />
+            <button id="importJson">가져오기</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips-row">
+        <span class="chip">읽지 않음 전체</span>
+      </div>
+
+      <div id="toast"></div>
+      <ul id="list"></ul>
+      <div class="footer-space"></div>
+    </div>
   </div>
-  <div class="row" id="stats" style="font-size:12px;color:#555;">전체 0 · unread 0 · read 0</div>
-  <div class="row">
-    <input id="tagFilter" placeholder="태그 필터 (예: ai)" />
-    <button id="clearTagFilter">태그 초기화</button>
-  </div>
-  <div class="row">
-    <button id="saveCurrent">현재 탭 저장</button>
-    <button id="showUnread">Unread만</button>
-  </div>
-  <div class="row">
-    <select id="sortOrder">
-      <option value="desc">최신순</option>
-      <option value="asc">오래된순</option>
-    </select>
-    <button id="markAllRead">전체 읽음</button>
-    <button id="markAllUnread">전체 unread</button>
-  </div>
-  <div class="row">
-    <button id="exportJson">Export</button>
-    <input id="importFile" type="file" accept="application/json" style="display:none" />
-    <button id="importJson">Import</button>
-  </div>
-  <div id="toast"></div>
-  <ul id="list"></ul>
   <script src="popup.js"></script>
 </body>
 </html>

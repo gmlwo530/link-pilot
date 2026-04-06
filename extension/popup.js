@@ -5,7 +5,9 @@ const sortEl = document.getElementById('sortOrder');
 const tagFilterEl = document.getElementById('tagFilter');
 const statsEl = document.getElementById('stats');
 const toastEl = document.getElementById('toast');
+const activeFiltersEl = document.getElementById('activeFilters');
 let unreadOnly = true;
+let searchDebounce;
 
 async function getCurrentTab() {
   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
@@ -154,6 +156,17 @@ async function loadStats() {
   statsEl.textContent = `전체 ${s.total} · 미읽음 ${s.unread} · 읽음 ${s.read}`;
 }
 
+function renderActiveFilters() {
+  if (!activeFiltersEl) return;
+  const chips = [];
+  if (unreadOnly) chips.push('미읽음만 보기');
+  if (searchEl.value.trim()) chips.push(`검색: ${searchEl.value.trim()}`);
+  if (tagFilterEl.value.trim()) chips.push(`태그: ${tagFilterEl.value.trim()}`);
+  chips.push(sortEl.value === 'asc' ? '오래된순' : '최신순');
+
+  activeFiltersEl.innerHTML = chips.map((chip) => `<span class="chip">${escapeHtml(chip)}</span>`).join('');
+}
+
 async function load() {
   const q = searchEl.value.trim();
   const tag = tagFilterEl.value.trim();
@@ -165,6 +178,7 @@ async function load() {
   const res = await fetch(`${API}/bookmarks?${params.toString()}`);
   const data = await res.json();
   render(data.items || []);
+  renderActiveFilters();
   await loadStats();
 }
 
@@ -264,6 +278,16 @@ sortEl.addEventListener('change', async () => {
 
 searchEl.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') load();
+});
+
+searchEl.addEventListener('input', () => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(load, 220);
+});
+
+tagFilterEl.addEventListener('input', () => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(load, 220);
 });
 async function summarize(id) {
   const el = document.getElementById(`summary-${id}`);

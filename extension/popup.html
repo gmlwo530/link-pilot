@@ -80,7 +80,7 @@
       padding: 12px 12px 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .stats-card {
@@ -120,6 +120,12 @@
       gap: 8px;
       flex-wrap: wrap;
       margin: 0;
+    }
+
+    .row-wrap > button,
+    .row-wrap > select {
+      flex: 1 1 0;
+      min-width: 112px;
     }
 
     input, select, button { font: inherit; }
@@ -185,6 +191,7 @@
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
+      min-height: 28px;
     }
 
     .chip {
@@ -212,7 +219,7 @@
       list-style: none;
       padding: 10px 12px 12px;
       margin: 0;
-      max-height: 430px;
+      max-height: 410px;
       overflow: auto;
     }
 
@@ -357,9 +364,7 @@
         </div>
       </div>
 
-      <div class="chips-row">
-        <span class="chip">읽지 않음 전체</span>
-      </div>
+      <div class="chips-row" id="activeFilters"></div>
 
       <div id="toast"></div>
       <ul id="list"></ul>
